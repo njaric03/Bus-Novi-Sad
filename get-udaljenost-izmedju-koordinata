@@ -1,0 +1,22 @@
+from math import radians, cos, sqrt
+
+def udaljenost_izmedju_koordinata(lat1, lon1, lat2, lon2):
+    R = 6371.0
+
+    lat1_rad = radians(lat1)
+    lon1_rad = radians(lon1)
+    lat2_rad = radians(lat2)
+    lon2_rad = radians(lon2)
+
+    delta_lon = lon2_rad - lon1_rad
+    delta_lat = lat2_rad - lat1_rad
+
+    x = delta_lon * cos((lat1_rad + lat2_rad) / 2)
+    y = delta_lat
+    distance = sqrt(x**2 + y**2) * R
+
+    return distance
+
+distanca = udaljenost_izmedju_koordinata(45.251557081056426, 19.84706116750669, 45.25191685628647, 19.837160873950253)
+
+print(f"Udaljenost: {distanca} km.")
