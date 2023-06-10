@@ -1,0 +1,28 @@
+import pandas as pd
+import requests
+
+
+def get_linija_stanice(linija_id):
+    url = "https://gspns.rs/mreza-get-linija-tacke"
+    params = {
+        "linija": linija_id
+    }
+    try:
+        response = requests.get(url, params=params, verify = False)
+        response.raise_for_status()
+        data = response.json()  
+        return data
+    except requests.exceptions.RequestException as e:
+        print("Error:", e)
+        return None
+
+linije_df = pd.DataFrame(columns={"ID linije", "Lista stanica"})
+linije_id = ['1A', '1B', '1ZA', '1ZB', '2A', '2B', '3A', '3B', '3AA', '3AB', '3BA', '3BB', '4A', '4B', '5A', '5B', '5NA', '5NB', '6A', '6B', '6AA', '6AB', '7A', '7B', '8A', '8B', '9A', '9B', '9AA', '9AB', '10A', '10B', '11A', '11B', '12A', '12B', '13A', '13B', '14A', '14B', '15A', '15B', '16A', '16B', '17A', '18A', '18B', '19A', '19B', '20A', '20B', '21A', '21B', '25A', '25B', '68A', '68B', '69A', '69B', '71A', '71B', '22A', '22B', '23A', '23B', '24A', '24B', '30A', '30B', '35A', '35B', '41A', '41B', '42A', '42B', '43A', '43B', '51A', '51B', '52A', '52B', '53A', '53B', '54A', '54B', '55A', '55B', '56A', '56B', '64A', '64B', '72A', '72B', '73A', '73B', '74A', '74B', '76A', '76B', '31A', '31B', '32A', '32B', '33A', '33B', '60A', '60B', '61A', '61B', '62A', '62B', '63A', '63B', '77A', '77B', '78A', '78B', '79A', '79B', '80A', '80B', '81A', '81B', '84A', '84B', '86A', '86B']
+
+for linija_id in linije_id:    
+    stanice = get_linija_stanice(linija_id)
+    nova_linija = {"ID linije": linija_id, "Lista stanica" : stanice}
+    linije_df = linije_df.append(nova_linija, ignore_index = True)
+
+print(linije_df)
+linije_df.to_csv("linije.csv", index = False)
